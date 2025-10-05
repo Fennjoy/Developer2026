@@ -1,0 +1,1072 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FENNJOY WORLD - Netflix-Style E-commerce</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #141414;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,0) 100%);
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+
+        .scrolled {
+            background-color: #141414;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e50914;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #e5e5e5;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #ffffff;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #e50914;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px 8px 35px;
+            border-radius: 20px;
+            width: 200px;
+            transition: all 0.3s;
+        }
+
+        .search-box:focus {
+            width: 250px;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 12px;
+            color: #e5e5e5;
+        }
+
+        .user-icon, .cart-icon {
+            color: #e5e5e5;
+            font-size: 20px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .user-icon:hover, .cart-icon:hover {
+            color: #ffffff;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #e50914;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+            margin-top: 80px;
+            margin-bottom: 30px;
+            gap: 50px;
+        }
+
+        .hero-content {
+            flex: 1;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #e50914, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #e5e5e5;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .cta-button, .info-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cta-button {
+            background-color: #e50914;
+            color: white;
+        }
+
+        .cta-button:hover {
+            background-color: #f40612;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
+        }
+
+        .info-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .info-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Categories Navigation */
+        .categories-nav {
+            margin: 50px 50px 30px;
+        }
+
+        .categories-nav h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .categories-container {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 10px 0;
+            scrollbar-width: none;
+        }
+
+        .categories-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category {
+            padding: 10px 20px;
+            background-color: #2f2f2f;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .category:hover, .category.active {
+            background-color: #e50914;
+        }
+
+        /* Categories Section */
+        .category-section {
+            margin: 30px 50px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .category-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .see-all {
+            color: #e5e5e5;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s;
+        }
+
+        .see-all:hover {
+            color: #e50914;
+        }
+
+        .product-row {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 15px 0;
+            scrollbar-width: none;
+        }
+
+        .product-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .product-card {
+            min-width: 220px;
+            background-color: #2f2f2f;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-price {
+            color: #e50914;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .product-rating {
+            color: #ffc107;
+            margin: 5px 0;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .add-to-cart {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #f40612;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            background: linear-gradient(to right, #1a1a1a, #2a2a2a);
+            padding: 60px 50px;
+            margin: 50px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .newsletter p {
+            color: #e5e5e5;
+            margin-bottom: 25px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+
+        .newsletter-form button {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background-color: #f40612;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 50px 30px;
+            background-color: #0a0a0a;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #e5e5e5;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #808080;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: #e5e5e5;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #2f2f2f;
+            border-radius: 50%;
+            color: #e5e5e5;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: #e50914;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 30px;
+            border-top: 1px solid #2f2f2f;
+            color: #808080;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #808080;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #e5e5e5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero {
+                flex-direction: column;
+                height: auto;
+                text-align: center;
+            }
+            
+            .hero-content {
+                margin-bottom: 30px;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                padding: 0 20px;
+                margin-top: 70px;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-section, .categories-nav {
+                margin: 20px;
+            }
+            
+            .product-card {
+                min-width: 180px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .newsletter-form input, .newsletter-form button {
+                border-radius: 4px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">FENNJOY WORLD</div>
+        <nav class="nav-links">
+            <a href="#" class="active">Home</a>
+            <a href="#">Products</a>
+            <a href="#">Categories</a>
+            <a href="#">New Arrivals</a>
+            <a href="#">Deals</a>
+        </nav>
+        <div class="user-actions">
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search products...">
+                <i class="fas fa-search"></i>
+            </div>
+            <a href="#" class="user-icon"><i class="fas fa-user"></i></a>
+            <a href="#" class="cart-icon"><i class="fas fa-shopping-cart"></i><span class="cart-count">3</span></a>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Amazing Products</h1>
+            <p>Shop the latest trends with our Fennjoy world browsing experience. Exclusive deals just for you!</p>
+            <div class="hero-buttons">
+                <button class="cta-button"><i class="fas fa-shopping-bag"></i> Shop Now</button>
+                <button class="info-button"><i class="fas fa-info-circle"></i> Learn More</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Shopping Experience">
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Categories Navigation -->
+        <section class="categories-nav">
+            <h2>Browse Categories</h2>
+            <div class="categories-container">
+                <div class="category active">All Products</div>
+                <div class="category">Electronics</div>
+                <div class="category">Fashion</div>
+                <div class="category">Car</div>
+                <div class="category">Movies</div>
+                <div class="category">Books</div>
+                <div class="category">Beauty</div>
+            </div>
+        </section>
+
+        <!-- Product Rows -->
+        <section class="category-section">
+            <div class="section-header">
+                <h2 class="category-title">New Releases</h2>
+                <a href="#" class="see-all">See All <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="product-row" id="new-releases">
+                <!-- Product cards will be generated by JavaScript -->
+            </div>
+        </section>
+
+        <section class="category-section">
+            <div class="section-header">
+                <h2 class="category-title">Popular This Week</h2>
+                <a href="#" class="see-all">See All <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="product-row" id="popular">
+                <!-- Product cards will be generated by JavaScript -->
+            </div>
+        </section>
+
+        <section class="category-section">
+            <div class="section-header">
+                <h2 class="category-title">Trending Now</h2>
+                <a href="#" class="see-all">See All <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="product-row" id="trending">
+                <!-- Product cards will be generated by JavaScript -->
+            </div>
+        </section>
+
+        <section class="category-section">
+            <div class="section-header">
+                <h2 class="category-title">Top Deals</h2>
+                <a href="#" class="see-all">See All <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="product-row" id="deals">
+                <!-- Product cards will be generated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter">
+            <div class="newsletter-content">
+                <h2>Get Exclusive Deals</h2>
+                <p>Subscribe to our newsletter and be the first to know about new products and special offers.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Your email address">
+                    <button>Subscribe</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <ul>
+                    <li><a href="#">All Products</a></li>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Best Sellers</a></li>
+                    <li><a href="#">Sale Items</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Help</h3>
+                <ul>
+                    <li><a href="#">Customer Service</a></li>
+                    <li><a href="#">Track Order</a></li>
+                    <li><a href="#">Returns & Exchanges</a></li>
+                    <li><a href="#">Shipping Info</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>About</h3>
+                <ul>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Corporate Responsibility</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 FENNJOY WORLD. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Product data with books, cars, phones, and movies/TV shows
+        const products = [
+            
+            { 
+                id: 1, 
+                title: "Toyota Mega Cruiser", 
+                price: "$2999.99", 
+                originalPrice: "$3947.99",
+                image: "https://www.spinny.com/blog/wp-content/uploads/2024/09/videoframe_0.webp",
+                rating: 4.5,
+                category: "electronics"
+            },
+            { 
+                id: 2, 
+                title: "Latest Smartphone", 
+                price: "$899", 
+                originalPrice: "$999",
+                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.7,
+                category: "electronics"
+            },
+            { 
+                id: 3, 
+                title: "Premium Phone", 
+                price: "$1,199", 
+                originalPrice: "$1,299",
+                image: "https://images.unsplash.com/photo-1585060544812-6b45742d762f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.8,
+                category: "electronics"
+            },
+            
+            { 
+                id: 4, 
+                title: "camera", 
+                price: "$39.99", 
+                originalPrice: "$49.99",
+                image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.8,
+                category: "fashion"
+            },
+            { 
+                id: 5, 
+                title: "BMX Bicycles", 
+                price: "$69.99", 
+                originalPrice: "$89.99",
+                image: "https://www.flybikes.com/storage/products/mid-65ccd16f96ac1.jpg",
+                rating: 4.3,
+                category: "fashion"
+            },
+            { 
+                id: 6, 
+                title: "iphone 17", 
+                price: "$24.99", 
+                originalPrice: "$29.99",
+                image: "https://www.cnet.com/a/img/resize/3b73992f654271cf7c7bfca1eafa5caabc69ff29/hub/2025/09/09/0f2de062-da0d-4d41-a3d6-d1432cc6e440/screenshot-2025-09-09-at-1-31-40pm.png?auto=webp&fit=crop&height=675&width=1200",
+                rating: 4.5,
+                category: "fashion"
+            },
+           
+            { 
+                id: 7, 
+                title: "Awalkonda", 
+                price: "$49.99", 
+                originalPrice: "$59.99",
+                image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.2,
+                category: "home"
+            },
+            { 
+                id: 8, 
+                title: "Orient Electric Desk 25 Table Fan", 
+                price: "$89.99", 
+                originalPrice: "$109.99",
+                image: "https://img-prd-pim.poorvika.com/product/bajaj-neo-spectrum-400-mm-table-fan-all-black-front-vieww.png",
+                rating: 4.7,
+                category: "home"
+            },
+            { 
+                id: 9, 
+                title: "Roshfort", 
+                price: "$34.99", 
+                originalPrice: "$44.99",
+                image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.6,
+                category: "home"
+            },
+            // Sports
+            { 
+                id: 10, 
+                title: "headphones", 
+                price: "$59.99", 
+                originalPrice: "$69.99",
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.7,
+                category: "sports"
+            },
+            { 
+                id: 11, 
+                title: "colling glass", 
+                price: "$49.99", 
+                originalPrice: "$59.99",
+                image: "https://royaltail.in/cdn/shop/files/royaltail-sunglasses-square-rt-squ-silver-1.jpg?v=1707741614&width=1080",
+                rating: 4.1,
+                category: "sports"
+            },
+            { 
+                id: 12, 
+                title: "Luxury Sports Car", 
+                price: "$89,999", 
+                originalPrice: "$99,999",
+                image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.9,
+                category: "sports"
+            },
+            // Books
+            { 
+                id: 13, 
+                title: "smart tv", 
+                price: "$19.99", 
+                originalPrice: "$24.99",
+                image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.0,
+                category: "books"
+            },
+            { 
+                id: 14, 
+                title: "Book", 
+                price: "$39.99", 
+                originalPrice: "$49.99",
+                image: "https://images1.penguinrandomhouse.com/cover/9780345547217",
+                rating: 4.4,
+                category: "books"
+            },
+            { 
+                id: 15, 
+                title: "Best Seller Book", 
+                price: "$14.99", 
+                originalPrice: "$19.99",
+                image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.8,
+                category: "books"
+            },
+            // Beauty
+            { 
+                id: 16, 
+                title: "space Book", 
+                price: "$79.99", 
+                originalPrice: "$99.99",
+                image: "https://store.whitefalconpublishing.com/cdn/shop/files/Cosmic_Cover_F_grande.jpg",
+                rating: 4.9,
+                category: "beauty"
+            },
+            { 
+                id: 17, 
+                title: "dimension portal book", 
+                price: "$29.99", 
+                originalPrice: "$39.99",
+                image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.2,
+                category: "beauty"
+            },
+            // Movies & TV
+            { 
+                id: 18, 
+                title: "Interstellar", 
+                price: "$24.99", 
+                originalPrice: "$29.99",
+                image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.9,
+                category: "movies"
+            },
+            { 
+                id: 19, 
+                title: "Wednesday Series", 
+                price: "$19.99", 
+                originalPrice: "$24.99",
+                image: "https://images.justwatch.com/poster/331439144/s718/season-2.jpg",
+                rating: 4.8,
+                category: "movies"
+            },
+            { 
+                id: 20, 
+                title: "Spider man", 
+                price: "$19.99", 
+                originalPrice: "$24.99",
+                image: "https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+                rating: 4.9,
+                category: "movies"
+            },
+            { 
+                id: 21, 
+                title: "Transformers: The Last Knight", 
+                price: "$22.99", 
+                originalPrice: "$29.99",
+                image: "https://images-cdn.ubuy.co.in/668d14923017d1788a7a2770-movie-poster-transformers-the-last.jpg",
+                rating: 4.8,
+                category: "movies"
+            },
+            { 
+                id: 22, 
+                title: "Avengers: Endgame", 
+                price: "$24.99", 
+                originalPrice: "$34.99",
+                image: "https://upload.wikimedia.org/wikipedia/en/0/0d/Avengers_Endgame_poster.jpg",
+                rating: 4.9,
+                category: "movies"
+            },
+            { 
+                id: 23, 
+                title: "Batman Begins", 
+                price: "$16.99", 
+                originalPrice: "$21.99",
+                image: "https://upload.wikimedia.org/wikipedia/en/1/1c/The_Dark_Knight_%282008_film%29.jpg",
+                rating: 4.7,
+                category: "movies"
+            },
+            { 
+                id: 24, 
+                title: "Spider-Man: Into the Spider-Verse", 
+                price: "$18.99", 
+                originalPrice: "$24.99",
+                image: "https://image.tmdb.org/t/p/original/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+                rating: 4.8,
+                category: "movies"
+            }
+        ];
+
+        // Function to generate product cards
+        function generateProductCards(containerId, productList) {
+            const container = document.getElementById(containerId);
+            
+            // Clear existing content
+            container.innerHTML = '';
+            
+            // Add product cards
+            productList.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.setAttribute('data-id', product.id);
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.title}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.title}</h3>
+                        <div class="product-rating">
+                            ${generateStarRating(product.rating)}
+                            <span>${product.rating}</span>
+                        </div>
+                        <div class="product-price">
+                            ${product.price} <span class="original-price">${product.originalPrice}</span>
+                        </div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                `;
+                container.appendChild(productCard);
+            });
+        }
+
+        // Function to generate star rating
+        function generateStarRating(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            const emptyStars = 5 - Math.ceil(rating);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            return stars;
+        }
+
+        // Initialize the page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Generate product cards for each section
+            generateProductCards('new-releases', products.slice(0, 6));
+            generateProductCards('popular', products.slice(6, 12));
+            generateProductCards('trending', products.slice(12, 18));
+            generateProductCards('deals', products.slice(18, 24));
+            
+            // Add horizontal scrolling with mouse wheel
+            const rows = document.querySelectorAll('.product-row');
+            rows.forEach(row => {
+                row.addEventListener('wheel', (e) => {
+                    if (e.deltaY !== 0) {
+                        e.preventDefault();
+                        row.scrollLeft += e.deltaY;
+                    }
+                });
+            });
+            
+            // Change header background on scroll
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // Category navigation
+            const categories = document.querySelectorAll('.category');
+            categories.forEach(category => {
+                category.addEventListener('click', () => {
+                    categories.forEach(c => c.classList.remove('active'));
+                    category.classList.add('active');
+                    
+                    // In a real application, you would filter products by category here
+                    // For this demo, we'll just show a message
+                    console.log(`Filtering by category: ${category.textContent}`);
+                });
+            });
+            
+            // Add to cart functionality
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('add-to-cart')) {
+                    const productCard = e.target.closest('.product-card');
+                    const productId = productCard.getAttribute('data-id');
+                    const product = products.find(p => p.id == productId);
+                    
+                    // Update cart count
+                    const cartCount = document.querySelector('.cart-count');
+                    cartCount.textContent = parseInt(cartCount.textContent) + 1;
+                    
+                    // Show confirmation (in a real app, you might use a toast notification)
+                    alert(`Added "${product.title}" to cart!`);
+                }
+            });
+            
+            // Newsletter form submission
+            const newsletterForm = document.querySelector('.newsletter-form');
+            newsletterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = newsletterForm.querySelector('input').value;
+                alert(`Thank you for subscribing with ${email}! You'll receive our exclusive deals soon.`);
+                newsletterForm.reset();
+            });
+        });
+    </script>
+</body>
+</html>
